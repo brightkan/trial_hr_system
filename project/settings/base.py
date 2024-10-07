@@ -40,6 +40,7 @@ INSTALLED_APPS = [
     'staff',
     'api_performance',
     'drf_yasg',
+    'custom_auth'
 ]
 
 MIDDLEWARE = [
@@ -57,6 +58,9 @@ MIDDLEWARE = [
 ROOT_URLCONF = 'project.urls'
 
 REST_FRAMEWORK = {
+    'DEFAULT_AUTHENTICATION_CLASSES': (
+        'custom_auth.authentication.SafeJWTAuthentication',
+    ),
     'DEFAULT_PERMISSION_CLASSES': (
         'rest_framework.permissions.IsAuthenticated',
     ),
