@@ -4,7 +4,7 @@ This guide outlines the steps to deploy the Django project for the HR Management
 
 ## Prerequisites
 
-- Python 3.x installed
+- Python 3.12.x installed
 - Virtual environment tool (like `venv` or `virtualenv`)
 - Git installed
 
@@ -12,13 +12,13 @@ This guide outlines the steps to deploy the Django project for the HR Management
 
 1. **Clone the Repository**:
    ```bash
-   git clone https://github.com/yourusername/project.git
-   cd project
+   git clone https://github.com/brightkan/trial_hr_system.git
+   cd trial_hr_system
 
 2. **Create Virtual Environment**:
    ```bash
     python3 -m venv venv
-source venv/bin/activate  # On Windows use `venv\Scripts\activate`
+    source venv/bin/activate  # On Windows use `venv\Scripts\activate`
 
 3. **Add .env variables**:
    ```bash
