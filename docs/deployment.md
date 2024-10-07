@@ -50,5 +50,11 @@ This guide outlines the steps to deploy the Django project for the HR Management
 9. **Access the Application**:
     Visit `http://localhost:8000` in your browser.
 
+10. **API documentation**:
+    Visit `http://localhost:8000/swagger` in your browser.
+
+11. **Admin Panel**:
+    Visit `http://localhost:8000/admin` in your browser.
+
 
 
