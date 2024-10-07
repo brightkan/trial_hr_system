@@ -1,7 +1,8 @@
 from django.shortcuts import render
 
 from rest_framework import status
-from rest_framework.decorators import api_view
+from rest_framework.decorators import api_view, permission_classes
+from rest_framework.permissions import IsAdminUser
 from rest_framework.response import Response
 from .models import StaffMember, StaffCode
 from .serializers import StaffMemberSerializer
@@ -69,4 +70,16 @@ def update_staff(request, employee_number):
         serializer.save()
         return Response(serializer.data, status=status.HTTP_200_OK)
     return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+
+
+@api_view(['GET'])
+@permission_classes([IsAdminUser])  # Only superusers can access
+def generate_staff_code(request):
+    # Generate a new staff code
+    new_code = StaffCode.generate_code()
+
+    # Save the new code to the database
+    staff_code = StaffCode.objects.create(code=new_code)
+
+    return Response({'code': staff_code.code}, status=status.HTTP_201_CREATED)
 

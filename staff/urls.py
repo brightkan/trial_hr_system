@@ -6,6 +6,8 @@ from staff import views
 from drf_yasg.views import get_schema_view
 from drf_yasg import openapi
 
+from staff.views import generate_staff_code
+
 schema_view = get_schema_view(
    openapi.Info(
       title="Snippets API",
@@ -28,4 +30,5 @@ urlpatterns = [
     path('staff/retrieve/', views.retrieve_staff, name='retrieve_staff'),
     path('staff/retrieve/<str:employee_number>/', views.retrieve_staff, name='retrieve_staff_number'),
     path('staff/update/<str:employee_number>/', views.update_staff, name='update_staff'),
+    path('staff/generate_staff_code/', generate_staff_code, name='generate_staff_code'),
 ]
