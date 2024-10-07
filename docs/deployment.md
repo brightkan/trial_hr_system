@@ -7,7 +7,6 @@ This guide outlines the steps to deploy the Django project for the HR Management
 - Python 3.x installed
 - Virtual environment tool (like `venv` or `virtualenv`)
 - Git installed
-- WSGI server (like Gunicorn)
 
 ## Steps to Deploy
 
