@@ -14,6 +14,8 @@ User = get_user_model()
 @api_view(['POST'])
 @permission_classes([AllowAny])
 def login(request):
+    """Provide username and password and obtain an access token to use when accessing protected endpoints"""
+
     username = request.data.get('username')
     password = request.data.get('password')
 
@@ -41,6 +43,9 @@ def login(request):
 @api_view(['POST'])
 @permission_classes([AllowAny])
 def refresh_token_view(request):
+    """
+     Refresh an access token
+    """
     User = get_user_model()
     refresh_token = request.data.get("refreshToken")
     if request.user.is_authenticated:

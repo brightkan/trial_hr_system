@@ -12,6 +12,9 @@ from .utils import is_valid_code
 
 @api_view(['POST'])
 def register_staff(request):
+    """
+     Register a new staff member.
+    """
     if request.method == 'POST':
         data = request.data
 
@@ -45,6 +48,10 @@ def register_staff(request):
 
 @api_view(['GET'])
 def retrieve_staff(request, employee_number=None):
+    """
+        Retrieve staff member(s).
+    """
+
     if employee_number:
         try:
             staff_member = StaffMember.objects.get(employee_number=employee_number)
@@ -60,6 +67,10 @@ def retrieve_staff(request, employee_number=None):
 
 @api_view(['PUT'])
 def update_staff(request, employee_number):
+    """
+        Update a staff member.
+    """
+
     try:
         staff_member = StaffMember.objects.get(employee_number=employee_number)
     except StaffMember.DoesNotExist:
@@ -75,7 +86,13 @@ def update_staff(request, employee_number):
 @api_view(['GET'])
 @permission_classes([IsAdminUser])  # Only superusers can access
 def generate_staff_code(request):
-    # Generate a new staff code
+    """
+      Generate a new staff code.
+
+      This endpoint allows superusers to generate a new staff code.
+      The code is a unique 10-digit alphanumeric string.
+      Only superusers can access this endpoint.
+    """
     new_code = StaffCode.generate_code()
 
     # Save the new code to the database
