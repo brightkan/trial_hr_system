@@ -45,14 +45,21 @@ def register_staff(request):
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
 
+from rest_framework.decorators import api_view
+from rest_framework.response import Response
+from rest_framework import status
+from rest_framework.pagination import PageNumberPagination
+from .models import StaffMember
+from .serializers import StaffMemberSerializer
+
 
 @api_view(['GET'])
 def retrieve_staff(request, employee_number=None):
     """
-        Retrieve staff member(s).
+    Retrieve staff member(s) with pagination.
     """
-
     if employee_number:
+        # Retrieve a specific staff member by employee number
         try:
             staff_member = StaffMember.objects.get(employee_number=employee_number)
             serializer = StaffMemberSerializer(staff_member)
@@ -60,9 +67,21 @@ def retrieve_staff(request, employee_number=None):
         except StaffMember.DoesNotExist:
             return Response({"error": "Staff member not found."}, status=status.HTTP_404_NOT_FOUND)
     else:
+        # Retrieve a list of staff members with pagination
         staff_members = StaffMember.objects.all()
-        serializer = StaffMemberSerializer(staff_members, many=True)
-        return Response(serializer.data, status=status.HTTP_200_OK)
+
+        # Instantiate the paginator
+        paginator = PageNumberPagination()
+        paginator.page_size = 10  # You can adjust the page size as needed
+
+        # Paginate the queryset
+        paginated_staff_members = paginator.paginate_queryset(staff_members, request)
+
+        # Serialize the paginated data
+        serializer = StaffMemberSerializer(paginated_staff_members, many=True)
+
+        # Return the paginated response
+        return paginator.get_paginated_response(serializer.data)
 
 
 @api_view(['PUT'])
