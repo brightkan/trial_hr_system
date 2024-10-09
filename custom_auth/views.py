@@ -12,6 +12,7 @@ from project import settings
 # Create your views here.
 User = get_user_model()
 
+
 @api_view(['POST'])
 @permission_classes([AllowAny])
 def login(request):
@@ -47,11 +48,12 @@ def login(request):
     refresh_token = generate_refresh_token(user)
 
     return Response({
-        'access': access_token,
-        'refresh': refresh_token,
+        'access_token': access_token,
+        'refreshToken': refresh_token,
         'user_id': user.id,
         'username': user.username
     }, status=status.HTTP_200_OK)
+
 
 @api_view(['POST'])
 @permission_classes([AllowAny])

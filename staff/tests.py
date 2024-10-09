@@ -35,7 +35,7 @@ class StaffMemberAPITests(APITestCase):
 
         # Ensure the login was successful and we received a token
         self.assertEqual(response.status_code, status.HTTP_200_OK)
-        self.token = response.data['access']  # Assume 'access' is the key in the response
+        self.token = response.data['access_token']  # Assume 'access' is the key in the response
 
         # Set up authorization headers for authenticated requests
         self.client.credentials(HTTP_AUTHORIZATION=f'Bearer {self.token}')
