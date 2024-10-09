@@ -60,5 +60,10 @@ This guide outlines the steps to deploy the Django project for the HR Management
 12. ***API Performance View On this link***:
     Visit `http://localhost:8000/admin/api_performance/apirequestlog/summary_view/` in your browser.
     You can also visit the Admin panel and click on the API Performance and click on summary to view the API performance.
+    API Performance is available to superusers. Use the super user account created in step 6 to access the API Performance view.
+
+13. ***Generate a staff code***:
+    ```bash
+    python manage.py generate_staff_code
 
 
