@@ -1,17 +1,12 @@
 from unfold.admin import ModelAdmin
-from unfold.forms import AdminPasswordChangeForm, UserChangeForm, UserCreationForm
 
 
 class UserAdmin(ModelAdmin):
-    list_display = ('id', 'username', 'email', 'is_staff', 'is_active', 'last_login')
+    list_display = ('id', 'username', 'email', 'is_staff', 'is_active', 'date_joined')
     list_display_links = ('id', 'username')
-    list_filter = ('is_staff', 'is_active', 'last_login')
+    list_filter = ('is_staff', 'is_active', 'date_joined')
     search_fields = ('username', 'email')
     list_per_page = 25
-
-    form = UserChangeForm
-    add_form = UserCreationForm
-    change_password_form = AdminPasswordChangeForm
 
 
 class StaffMemberAdmin(ModelAdmin):

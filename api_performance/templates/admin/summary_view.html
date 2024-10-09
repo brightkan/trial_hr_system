@@ -1,0 +1,41 @@
+{% extends 'unfold/layouts/base_simple.html' %}
+
+{% load cache humanize i18n unfold %}
+
+{% block breadcrumbs %}{% endblock %}
+
+{% block title %}
+    {% if subtitle %}
+        {{ subtitle }} |
+    {% endif %}
+    {{ title }} | {{ site_title|default:_('Django site admin') }}
+{% endblock %}
+
+{% block branding %}
+    <h1 id="site-name">
+        <a href="{% url 'admin:index' %}">
+            {{ site_header|default:_('Django administration') }}
+        </a>
+    </h1>
+{% endblock %}
+
+{% block content %}
+    {% component "unfold/components/title.html"%}
+        API Request Summary
+    {% endcomponent %}
+    <br/>
+
+    {% component "unfold/components/flex.html" with col=0 %}
+        {% component "unfold/components/card.html" with title="Total API Requests" %}
+            <p>{{ total_requests }}</p>
+        {% endcomponent %}
+
+        {% component "unfold/components/card.html" with title="Successful Requests" %}
+            <p>{{ successful_requests }}</p>
+        {% endcomponent %}
+
+        {% component "unfold/components/card.html" with title="Failed Requests" %}
+            <p>{{ failed_requests }}</p>
+        {% endcomponent %}
+    {% endcomponent %}
+{% endblock %}

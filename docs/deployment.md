@@ -25,6 +25,7 @@ This guide outlines the steps to deploy the Django project for the HR Management
    cp .env.example .env
    # Update the .env file with your own values
    # set DEBUG=1 for development and DEBUG=0 for production
+   # set SECRET_KEY to a unique string for secure token generation and session management
 
 4. **Install Requirements**:
     ```bash

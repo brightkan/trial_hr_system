@@ -1,6 +1,7 @@
 from pathlib import Path
 
 import decouple
+from django.templatetags.static import static
 from django.urls import reverse_lazy
 from django.utils.translation import gettext_lazy as _
 
@@ -23,12 +24,12 @@ ALLOWED_HOSTS = decouple.config('ALLOWED_HOSTS', default="127.0.0.1, localhost",
 # Application definition
 
 INSTALLED_APPS = [
-    "unfold",
-    "unfold.contrib.filters",
-    "unfold.contrib.forms",
-    "unfold.contrib.inlines",
-    "unfold.contrib.import_export",
-    "unfold.contrib.guardian",
+    "unfold",  # before django.contrib.admin
+    "unfold.contrib.filters",  # optional, if special filters are needed
+    "unfold.contrib.forms",  # optional, if special form elements are needed
+    "unfold.contrib.inlines",  # optional, if special inlines are needed
+    "unfold.contrib.import_export",  # optional, if django-import-export package is used
+    "unfold.contrib.guardian",  # optional, if django-guardian package is used
     "unfold.contrib.simple_history",
     'django.contrib.admin',
     'django.contrib.auth',
@@ -36,6 +37,7 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
+    'django.contrib.humanize',
     'rest_framework',
     'staff',
     'api_performance',
@@ -140,28 +142,73 @@ STATIC_ROOT = BASE_DIR / 'staticfiles'
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
-
 UNFOLD = {
-    "SIDEBAR": {
-        "show_search": True,
-        "show_all_applications": True,
+"SIDEBAR": {
+        "show_search": False,  # Search in applications and models names
+        "show_all_applications": False,  # Dropdown with all applications and models
         "navigation": [
             {
-                "title": _("Navigation"),
-                "separator": True,
-                "collapsible": True,
+                "title": _("API Performance"),
+                "separator": True,  # Top border
+                "collapsible": True,  # Collapsible group of links
                 "items": [
                     {
-                        "title": _("Dashboard"),
-                        "icon": "dashboard",
-                        "link": reverse_lazy("admin:index"),
+                        "title": _("Summary"),
+                        "icon": "query_stats",  # Supported icon set: https://fonts.google.com/icons
+                        "link": reverse_lazy("admin:summary_view"),
+                        "permission": lambda request: request.user.is_superuser,
+                    },
+                    {
+                        "title": _("API Logs"),
+                        "icon": "description",
+                        "link": reverse_lazy("admin:api_performance_apirequestlog_changelist"),
                         "permission": lambda request: request.user.is_superuser,
                     },
 
                 ],
             },
+            {
+                "title": _("Staff Management"),
+                "separator": True,
+                "collapsible": True,
+                "items": [
+                    {
+                        "title": _("Staff Members"),
+                        "icon": "people",
+                        "link": reverse_lazy("admin:staff_staffmember_changelist"),
+                        "permission": lambda request: request.user.is_staff,
+                    },
+                    {
+                        "title": _("Staff Codes"),
+                        "icon": "code",
+                        "link": reverse_lazy("admin:staff_staffcode_changelist"),
+                        "permission": lambda request: request.user.is_superuser,
+                    },
+                ],
+            },
+            {
+                "title": _("Authentication"),
+                "separator": True,
+                "collapsible": True,
+                "items": [
+                    {
+                        "title": _("Users"),
+                        "icon": "person",
+                        "link": reverse_lazy("admin:auth_user_changelist"),
+                        "permission": lambda request: request.user.is_superuser,
+                    },
+                    {
+                        "title": _("Groups"),
+                        "icon": "group",
+                        "link": reverse_lazy("admin:auth_group_changelist"),
+                        "permission": lambda request: request.user.is_superuser,
+                    },
+                ],
+            }
         ],
     },
 }
+
+
 
 
