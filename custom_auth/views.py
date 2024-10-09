@@ -6,39 +6,52 @@ from rest_framework.decorators import api_view, permission_classes
 from rest_framework.permissions import AllowAny, IsAuthenticated
 from rest_framework.response import Response
 import jwt
-from custom_auth.utils import generate_access_token
+from custom_auth.utils import generate_access_token, generate_refresh_token
 from project import settings
 
 # Create your views here.
 User = get_user_model()
+
 @api_view(['POST'])
 @permission_classes([AllowAny])
 def login(request):
-    """Provide username and password and obtain an access token to use when accessing protected endpoints"""
-
+    """
+    Authenticate the user and return an access token if credentials are valid.
+    The credentials are username and password.
+    """
+    # Extract username and password from request data
     username = request.data.get('username')
     password = request.data.get('password')
 
-    if username is None or password is None:
+    # Check if both username and password are provided
+    if not username or not password:
         return Response({'error': 'Please provide both username and password.'}, status=status.HTTP_400_BAD_REQUEST)
 
-        # Check if the user was created using Bakozi OAuth
-    try:
-        User.objects.get(username=username)
-    except User.DoesNotExist:
-        return Response({'error': 'Invalid Credentials'}, status=status.HTTP_401_UNAUTHORIZED)
-
-    # Authenticate user using email and password
+    # Authenticate user using provided credentials
     user = authenticate(username=username, password=password)
 
-    if not user:
-        return Response({'error': 'Invalid Credentials'}, status=status.HTTP_401_UNAUTHORIZED)
+    # Return error if authentication fails
+    if user is None:
+        return Response({'error': 'Invalid credentials. Please try again.'}, status=status.HTTP_401_UNAUTHORIZED)
 
+    # Check if the user's account is active
     if not user.is_active:
-        return Response({'error': 'User account is disabled'}, status=status.HTTP_401_UNAUTHORIZED)
+        return Response({'error': 'User account is disabled.'}, status=status.HTTP_403_FORBIDDEN)
 
+    # Update last login timestamp
     user.last_login = timezone.now()
     user.save()
+
+    # Generate and return access token
+    access_token = generate_access_token(user)
+    refresh_token = generate_refresh_token(user)
+
+    return Response({
+        'access': access_token,
+        'refresh': refresh_token,
+        'user_id': user.id,
+        'username': user.username
+    }, status=status.HTTP_200_OK)
 
 @api_view(['POST'])
 @permission_classes([AllowAny])

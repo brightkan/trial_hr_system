@@ -3,12 +3,12 @@ from rest_framework import status
 from rest_framework.test import APITestCase
 from django.contrib.auth.models import User  # Ensure User model is imported
 from .models import StaffMember, StaffCode  # Import your models
-import uuid
 
 
 class StaffMemberAPITests(APITestCase):
     def setUp(self):
         self.register_url = reverse('register_staff')
+        self.login_url = reverse('login')
         self.valid_unique_code = StaffCode.generate_code()
         self.invalid_unique_code = 'invalid_code'
 
@@ -24,9 +24,21 @@ class StaffMemberAPITests(APITestCase):
             employee_number='test-employee-number'
         )
 
-        # Create a user for authentication if necessary
+        # Create a user for authentication
         self.user = User.objects.create_user(username='testuser', password='testpass')
-        self.client.login(username='testuser', password='testpass')  # Authenticate the user
+
+        # Get JWT access token by making a request to the login API
+        response = self.client.post(self.login_url, {
+            'username': 'testuser',
+            'password': 'testpass'
+        }, format='json')
+
+        # Ensure the login was successful and we received a token
+        self.assertEqual(response.status_code, status.HTTP_200_OK)
+        self.token = response.data['access']  # Assume 'access' is the key in the response
+
+        # Set up authorization headers for authenticated requests
+        self.client.credentials(HTTP_AUTHORIZATION=f'Bearer {self.token}')
 
     def test_register_staff_success(self):
         staff_data = {
