@@ -80,5 +80,7 @@ The link to the deployment docs is [here](docs/deployment.md).
 
 ## Frontend 
 
-The link to frontend source code is [here](https://github.com/brightkan/staff-frontend.git). The frontend is built with React. The frontend files are packed this repository for easy access.
+The link to frontend source code is [here](https://github.com/brightkan/staff-frontend.git). The frontend is built with
+React. The frontend files are packaged with this repository for easy access. The frontend end is accessible at `/` 
+on the root path.
 
