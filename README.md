@@ -78,3 +78,7 @@ The performance summary is accessible at `/admin/api_performance/apirequestlog/s
 
 The link to the deployment docs is [here](docs/deployment.md).
 
+## Frontend 
+
+The link to frontend source code is [here](https://github.com/brightkan/staff-frontend.git)
+
