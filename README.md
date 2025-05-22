@@ -1,6 +1,8 @@
 ReadMe
 # HR Management System APIs
 
+![Test Coverage](https://github.com/brightkan/trial_hr_system/blob/main/.github/badges/coverage.svg)
+
 This project is a mini HR management system developed. It provides three core APIs that support the staff onboarding process, including staff registration, staff retrieval, and staff updates. Additionally, a client application is included that consumes these APIs, along with an admin interface to track API performance.
 
 ## Table of Contents
@@ -78,9 +80,39 @@ The performance summary is accessible at `/admin/api_performance/apirequestlog/s
 
 The link to the deployment docs is [here](docs/deployment.md).
 
+## Testing
+
+The project uses pytest with Django for testing. To run the tests:
+
+1. Install the required packages:
+   ```
+   pip install -r requirements.txt
+   ```
+
+2. Run the tests:
+   ```
+   pytest
+   ```
+
+3. To run tests with verbose output:
+   ```
+   pytest -v
+   ```
+
+4. To run tests in a specific module:
+   ```
+   pytest staff/test_staff.py
+   ```
+
+5. To run tests with coverage reporting:
+   ```
+   pytest --cov=. --cov-report=term
+   ```
+
+   The coverage badge at the top of this README shows the current test coverage percentage for the project.
+
 ## Frontend 
 
 The link to frontend source code is [here](https://github.com/brightkan/staff-frontend.git). The frontend is built with
 React. The frontend files are packaged with this repository for easy access. The frontend end is accessible at `/` 
 on the root path.
-
